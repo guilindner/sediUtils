@@ -20,7 +20,7 @@ def changeAtomType(inputFile,atomType,box):
     read_data = loadFile(inputFile)
     box = np.asarray(box).astype(np.float)
     temp = []
-    with open('In_pythonNew.in', 'w') as myfile:
+    with open('In_initialChanged.in', 'w') as myfile:
         for i in range(0,10):
             myfile.write(read_data[i])
         myfile.write("\n")
@@ -39,7 +39,7 @@ def changeAtomType(inputFile,atomType,box):
 def keepAtoms(inputFile,box):
     read_data = loadFile(inputFile)
     temp = []
-    with open('In_pythonNewKeep.in', 'w') as myfile:
+    with open('In_initialKept.in', 'w') as myfile:
         for i in range(0,10):
             myfile.write(read_data[i])
         myfile.write("\n")
