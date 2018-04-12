@@ -18,6 +18,7 @@ def loadFile(inputFile):
 
 def changeAtomType(inputFile,atomType,box):
     read_data = loadFile(inputFile)
+    box = np.asarray(box).astype(np.float)
     temp = []
     with open('In_pythonNew.in', 'w') as myfile:
         for i in range(0,10):
@@ -25,12 +26,14 @@ def changeAtomType(inputFile,atomType,box):
         myfile.write("\n")
         for i in range(11,len(read_data)):
             temp = read_data[i].split()
-            temp = np.asarray(temp)
+            temp = np.asarray(temp).astype(np.float)
+            print(box)
+            print(temp[4:])
             if (temp[4] > box[0]) and (temp[4] < box[1]) and (temp[5] > box[2]) and (temp[5] < box[3]) and (temp[6] > box[4]) and (temp[6] < box[5]):
-                myfile.write(str(temp[0])+" "+str(atomType)+" "+str(temp[2])+" "+str(temp[3])+
+                myfile.write(str(int(temp[0]))+" "+str(int(atomType))+" "+str(int(temp[2]))+" "+str(int(temp[3]))+
                              " "+str(temp[4]) +" "+str(temp[5])+" "+str(temp[6])+" "+"\n")
             else:
-                myfile.write(str(temp[0])+" "+str(temp[1])+" "+str(temp[2])+" "+str(temp[3])+
+                myfile.write(str(int(temp[0]))+" "+str(int(temp[1]))+" "+str(int(temp[2]))+" "+str(int(temp[3]))+
                              " "+str(temp[4]) +" "+str(temp[5])+" "+str(temp[6])+" "+"\n")
 
 def keepAtoms(inputFile,box):
