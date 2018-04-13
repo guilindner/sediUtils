@@ -16,9 +16,9 @@ python sediUtils.py -i In_initial.in -k 1 -b 0.003 0.5 0.0 0.5 0.0 0.5
 
 ---
 
-Add the velocity from file U to the velocity field Ub, ignoring values lower than 0.001 in any component:
+Add the velocity from file U to the velocity field Ub, using the setField to define a box:
 ```
-python sediUtils.py -i Ub -s U -t 0.001
+python sediUtils.py -i Ub -s U
 ```
 
 ---

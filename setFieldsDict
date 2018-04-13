@@ -9,26 +9,28 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       vectorField;
-    location    "constant/polyMesh";
-    object      points;
+    class       dictionary;
+    location    "system";
+    object      setFieldsDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-
-10
+defaultFieldValues
 (
-(0.0 0.0 0.0)
-(0.1 0.0 0.0)
-(0.1 0.1 0.0)
-(0.0 0.1 0.0)
-(0.0 0.0 0.1)
-(0.1 0.0 0.1)
-(0.1 0.1 0.1)
-(0.0 0.1 0.1)
-(0.2 0.2 0.2)
-(0.2 0.2 0.2)
-)
+    volVectorFieldValue UbCells (0 0 0)
+);
+
+regions
+(
+    boxToCell
+    {
+        box (0.006 0.009 0.026) (0.014 1.0 0.034);
+        fieldValues
+        (
+            volVectorFieldValue UbCells (999 999 999)
+        );
+    }
+);
 
 
 // ************************************************************************* //

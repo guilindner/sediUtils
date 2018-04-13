@@ -48,41 +48,44 @@ def keepAtoms(inputFile,box):
                 myfile.write(str(temp[0])+" "+str(temp[1])+" "+str(temp[2])+" "+str(temp[3])+
                              " "+str(temp[4]) +" "+str(temp[5])+" "+str(temp[6])+" "+"\n")
                              
-def sumField(inputFile,sumField,box):
-    box = np.asarray(box).astype(np.float)
+def sumField(inputFile,sumField):
     read_data1 = loadFile(inputFile)
     read_data2 = loadFile(sumField)
-    posFile = 'points'
-    read_data3 = loadFile(posFile)
+    cellsFile = 'UbCells'
+    read_data3 = loadFile(cellsFile)
     cells = int(read_data1[20])
     finalLine = len(read_data1)
     outfile = open('newUb','w')
     count = 0
     pointsList = []
     temp = []
-    for i in range(20,len(read_data3)):
-        if read_data3[i] == ')\n':
-            break
-        temp = read_data3[i].replace('(','').replace(')','').split()
-        temp = np.asarray(temp).astype(np.float)
-        if (temp[0] >= box[0]) and (temp[0] < box[1]) and (temp[1] >= box[2]) and (temp[1] < box[3]) and (temp[2] >= box[4]) and (temp[2] < box[5]):
-            pointsList.append(i+2)
-    print(len(pointsList),"points selected")
     
-            
-    for i in range(finalLine):
-        if i in pointsList:
-            vortexField = read_data2[i].replace('(','').replace(')','').split()
-            initialField = read_data1[i].replace('(','').replace(')','').split()
-            arrayVortex = np.asarray(vortexField)
-            arrayInitial = np.asarray(initialField)
-            arrayVortex = arrayVortex.astype(np.float)
-            arrayInitial = arrayInitial.astype(np.float)
+
+    for i in range(0,22):
+        outfile.write(str(read_data1[i])) 
+    for i in range(22,finalLine):
+        if read_data2[i] == ')\n':
+            line = i
+            outfile.write(')\n')
+            break
+        vortexField = read_data2[i].replace('(','').replace(')','').split()
+        initialField = read_data1[i].replace('(','').replace(')','').split()
+        cellsField = read_data3[i].replace('(','').replace(')','').split()
+        arrayVortex = np.asarray(vortexField)
+        arrayInitial = np.asarray(initialField)
+        arrayCells = np.asarray(cellsField)
+        arrayVortex = arrayVortex.astype(np.float)
+        arrayInitial = arrayInitial.astype(np.float)
+        cellsField = arrayCells.astype(np.int)
+        
+        if cellsField[0] == 999:
             result = arrayInitial + arrayVortex
             outfile.write('('+str(result[0])+' '+str(result[1])+' '+str(result[2])+')\n')
             count += 1
         else:
-            outfile.write(str(read_data1[i])) 
+            outfile.write(str(read_data1[i]))
+    for i in range(line+1,finalLine):
+        outfile.write(str(read_data1[i]))
 
     outfile.close()
     print(count,"of",cells, "changed")	                             
