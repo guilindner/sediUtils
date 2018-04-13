@@ -9,58 +9,26 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volVectorField;
-    location    "1";
-    object      U;
+    class       vectorField;
+    location    "constant/polyMesh";
+    object      points;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 -1 0 0 0 0];
 
-internalField   nonuniform List<vector> 
 10
 (
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
-(0.999 0.999 0.999)
+(0.0 0.0 0.0)
+(0.1 0.0 0.0)
+(0.1 0.1 0.0)
+(0.0 0.1 0.0)
+(0.0 0.0 0.1)
+(0.1 0.0 0.1)
+(0.1 0.1 0.1)
+(0.0 0.1 0.1)
+(0.2 0.2 0.2)
+(0.2 0.2 0.2)
 )
-;
-
-boundaryField
-{
-    bottom
-    {
-        type            fixedValue;
-        value           uniform (0 0 0);
-    }
-    top
-    {
-        type            slip;
-    }
-    left
-    {
-        type            cyclic;
-    }
-    right
-    {
-        type            cyclic;
-    }
-    front
-    {
-        type            cyclic;
-    }
-    back
-    {
-        type            cyclic;
-    }
-}
 
 
 // ************************************************************************* //

@@ -34,4 +34,4 @@ if __name__ == '__main__':
     if args.keepAtoms == True:
         tools.keepAtoms(args.inputFile, args.box)        
     if args.sumField != 'none':
-       tools.sumField(args.inputFile, args.sumField, args.threshold)
+       tools.sumField(args.inputFile, args.sumField, args.box)
