@@ -15,6 +15,47 @@ def loadFile(inputFile):
     with open(inputFile,'r') as f:
         read_data = f.readlines()
     return read_data
+    
+    
+def createAtoms(bounds):
+    bounds = np.asarray(bounds)
+    bounds = bounds.astype(np.float)
+    gapX = 0.0
+    gapY = 0.0
+    gapZ = 0.0
+    atype = 1
+    diameter = 0.0005
+    distance = 0.0005 #distance between particles
+    density = 2650
+    nPartx = int(bounds[0]/distance-2)
+    nParty = int(bounds[1]/distance-2)
+    nPartz = int(bounds[2]/distance-2)
+    atoms = []
+    count = 0
+    for k in range(nPartx):
+        for j in range(nParty):
+            for i in range(nPartz):
+                count +=1
+                x = (k+1)*distance+gapX+diameter
+                y = (j+1)*distance+gapY+diameter
+                z = (i+1)*distance+gapZ+diameter#+0.01
+                atoms.append([count,atype,diameter,density,x,y,z]) 
+
+
+    diameter = 0
+    with open('In_initialPython', 'w') as myfile:
+        myfile.write("sphere data\n\n")
+        myfile.write(str(len(atoms))+" atoms\n")
+        myfile.write(str(atype)+" atom types\n\n")
+        myfile.write(str(gapX+diameter)+" "+str(bounds[0]+gapX-diameter)+" xlo xhi\n")
+        myfile.write(str(gapY+diameter)+" "+str(bounds[1]+gapY-diameter)+" ylo yhi\n")
+        myfile.write(str(gapZ+diameter)+" "+str(bounds[2]+gapZ-diameter)+" zlo zhi\n\n")
+        myfile.write("Atoms\n\n")
+        for i in atoms:
+            myfile.write(str(i[0])+" "+str(i[1])+" "+str(i[2])+
+                         " "+str(i[3])+" "+str(i[4])+" "+str(i[5])+
+                         " "+str(i[6])+"\n")
+
 
 def changeAtomType(inputFile,atomType,box):
     read_data = loadFile(inputFile)

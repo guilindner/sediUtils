@@ -20,6 +20,8 @@ if __name__ == '__main__':
                         help='input file to be added', metavar='FILE')
     parser.add_argument('-t', '--threshold', dest='threshold', default=0.001, type=float,
                         help='threshold for the small velocity components')
+    parser.add_argument('-c', '--createAtoms', nargs=3, dest='bounds', default=[0.0,0.0,0.0],
+                        help='create atoms inside given bounds [x, y, z]')
     parser.add_argument('-a', '--atomType', dest='atomType', default=0, type=int,
                         help='change the atom type')
     parser.add_argument('-k', '--keepAtoms', dest='keepAtoms',default=False, type=bool,
@@ -29,6 +31,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
+    if args.bounds != [0.0,0.0,0.0]:
+        tools.createAtoms(args.bounds)
     if args.atomType != 0:
         tools.changeAtomType(args.inputFile, args.atomType, args.box)
     if args.keepAtoms == True:
