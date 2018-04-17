@@ -8,6 +8,7 @@ import argparse
 import numpy as np
 
 import tools
+import config
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Optional app description',
@@ -18,24 +19,31 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--sumField', dest='sumField',
                         default='none',
                         help='input file to be added', metavar='FILE')
-    parser.add_argument('-t', '--threshold', dest='threshold', default=0.001, type=float,
-                        help='threshold for the small velocity components')
-    parser.add_argument('-c', '--createAtoms', nargs=3, dest='bounds', default=[0.0,0.0,0.0],
-                        help='create atoms inside given bounds [x, y, z]')
-    parser.add_argument('-a', '--atomType', dest='atomType', default=0, type=int,
-                        help='change the atom type')
-    parser.add_argument('-k', '--keepAtoms', dest='keepAtoms',default=False, type=bool,
-                        help='keep atoms inside the box and remove the others')
-    parser.add_argument('-b', '--box', nargs=6, dest='box', default=[0.0,1.0,0.0,1.0,0.0,1.0],
-                        help='change the atom type on specific box. ex: -a 2 0.0 0.2 0.0 0.1 0.0 0.9')
+    parser.add_argument('-g', action='store_true',
+                        help='generate atoms inside the domain')
+    parser.add_argument('-c', action='store_true',
+                        help='convert from OpenFoam to LAMMPS')
+    parser.add_argument('-r', action='store_true',
+                        help='remove atoms outside the safeBox')
+    parser.add_argument('-f', action='store_true',
+                        help='freeze all particles')
+    parser.add_argument('-a', action='store_true',
+                        help='activate the atoms inside activeBox')
+
 
     args = parser.parse_args()
     
-    if args.bounds != [0.0,0.0,0.0]:
-        tools.createAtoms(args.bounds)
+    if args.g == True:
+        tools.generateAtoms(config.atoms, config.domainBox, config.safeBox)
+    if args.c == True:
+        tools.ofToLammps(args.inputFile, config.atoms, config.domainBox, config.safeBox) 
+    if args.r == True:
+        tools.removeAtoms(args.inputFile, config.atoms, config.safeBox)
+    if args.f == True:
+        tools.removeAtoms(args.inputFile)
     if args.atomType != 0:
         tools.changeAtomType(args.inputFile, args.atomType, args.box)
-    if args.keepAtoms == True:
-        tools.keepAtoms(args.inputFile, args.box)        
+
+
     if args.sumField != 'none':
        tools.sumField(args.inputFile, args.sumField)
