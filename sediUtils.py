@@ -36,14 +36,10 @@ if __name__ == '__main__':
     if args.g == True:
         tools.generateAtoms(config.atoms, config.domainBox, config.safeBox)
     if args.c == True:
-        tools.ofToLammps(args.inputFile, config.atoms, config.domainBox, config.safeBox) 
+        tools.ofToLammps(args.inputFile, config.atoms, config.domainBox) 
     if args.r == True:
         tools.removeAtoms(args.inputFile, config.atoms, config.safeBox)
     if args.f == True:
-        tools.removeAtoms(args.inputFile)
-    if args.atomType != 0:
-        tools.changeAtomType(args.inputFile, args.atomType, args.box)
-
-
+        tools.freezeAtoms(args.inputFile, config.domainBox)
     if args.sumField != 'none':
        tools.sumField(args.inputFile, args.sumField)
