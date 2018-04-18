@@ -41,5 +41,7 @@ if __name__ == '__main__':
         tools.removeAtoms(args.inputFile, config.atoms, config.safeBox)
     if args.f == True:
         tools.freezeAtoms(args.inputFile, config.domainBox)
+    if args.a == True:
+        tools.activateAtoms(args.inputFile, config.activeBox)
     if args.sumField != 'none':
        tools.sumField(args.inputFile, args.sumField)

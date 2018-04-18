@@ -13,6 +13,15 @@ def writeAtoms(myfile,temp_data,atoms):
         z = temp_data[i][2]
         myfile.write(str(i+1)+" "+str(atype)+" "+str(atoms['diameter'])+" "+str(atoms['density'])+
                      " "+str(x) +" "+str(y)+" "+str(z)+" "+"\n")
+
+def writeHeader(myfile,temp_data,atoms,domainBox):
+    myfile.write("sphere data\n\n")
+    myfile.write(str(len(temp_data))+" atoms\n")
+    myfile.write(str(atoms['nType'])+" atom types\n\n")
+    myfile.write(" "+str(domainBox[0])+" "+str(domainBox[1])+" xlo xhi\n")
+    myfile.write(" "+str(domainBox[2])+" "+str(domainBox[3])+" ylo yhi\n")
+    myfile.write(" "+str(domainBox[4])+" "+str(domainBox[5])+" zlo zhi\n")
+    myfile.write("\nAtoms\n\n")
     
 def generateAtoms(atoms, domainBox, safeBox):
     """Create a LAMMPS initial file
@@ -41,21 +50,12 @@ def generateAtoms(atoms, domainBox, safeBox):
                 temp_data.append([x, y, z, atype])
   
     with open(outfile, 'w') as myfile:
-        myfile.write("sphere data\n\n")
-        myfile.write(str(len(temp_data))+" atoms\n")
-        myfile.write(str(atoms['nType'])+" atom types\n\n")
-        myfile.write(" "+str(domainBox[0])+" "+str(domainBox[1])+" xlo xhi\n")
-        myfile.write(" "+str(domainBox[2])+" "+str(domainBox[3])+" ylo yhi\n")
-        myfile.write(" "+str(domainBox[4])+" "+str(domainBox[5])+" zlo zhi\n")
-        myfile.write("\nAtoms\n\n")
+        writeHeader(myfile,temp_data,atoms,domainBox)
         writeAtoms(myfile,temp_data,atoms)
     print('Created',outfile)
 
 def freezeAtoms(inputFile,domainBox):
-    """Change atom type to 2 (frozen)
-    
-    :params inputFile: LAMMPS input file
-    
+    """Freeze (change type to 2) all atoms    
     """
     outfile = 'In_Frozen.in'
     with open(inputFile,'r') as f:
@@ -65,20 +65,11 @@ def freezeAtoms(inputFile,domainBox):
         fileout.write(read_data)
     print('Created',outfile)
 
-def activateAtoms(inputFile,atomType,box):
-    """Change atom type for LAMMPS
-    
-    Change the type of all atoms inside the box to the desired value.
-    Normally type 1 is for active atoms and type 2 are for frozen atoms
-    
-    :params inputFile: LAMMPS input file
-    :params atomType: desired value of type inside the box
-    :params box: lower and upper values for x, y and z
-    
+def activateAtoms(inputFile,box):
+    """Activate (change type to 1) all atoms inside activeBox 
     """
     outfile = 'In_Active.in'
     read_data = loadFile(inputFile)
-    box = np.asarray(box).astype(np.float)
     temp = []
     with open(outfile, 'w') as myfile:
         for i in range(0,10):
@@ -89,7 +80,7 @@ def activateAtoms(inputFile,atomType,box):
             temp = np.asarray(temp).astype(np.float)
             box = np.asarray(box).astype(np.float)
             if (temp[4] > box[0]) and (temp[4] < box[1]) and (temp[5] > box[2]) and (temp[5] < box[3]) and (temp[6] > box[4]) and (temp[6] < box[5]):
-                myfile.write(str(int(temp[0]))+" "+str(int(atomType))+" "+str(temp[2])+" "+str(int(temp[3]))+
+                myfile.write(str(int(temp[0]))+" "+"1"+" "+str(temp[2])+" "+str(int(temp[3]))+
                              " "+str(temp[4]) +" "+str(temp[5])+" "+str(temp[6])+" "+"\n")
             else:
                 myfile.write(str(int(temp[0]))+" "+str(int(temp[1]))+" "+str(temp[2])+" "+str(int(temp[3]))+
@@ -98,10 +89,6 @@ def activateAtoms(inputFile,atomType,box):
     
 def removeAtoms(inputFile, atoms, box):
     """Remove the atoms outside the safeBox
-    
-    :params inputFile: LAMMPS input file
-    :params box: lower and upper values for x, y and z
-    
     """
     outfile = 'In_Removed.in'
     read_data = loadFile(inputFile)
@@ -143,25 +130,20 @@ def ofToLammps(inputFile, atoms, domainBox):
         temp_data.append([modLine[0],modLine[1],modLine[2],1])
 
     with open(outfile, 'w') as myfile:
-        myfile.write("sphere data\n\n")
-        myfile.write(str(len(temp_data))+" atoms\n")
-        myfile.write(str(atoms['nType'])+" atom types\n\n")
-        myfile.write(" "+str(domainBox[0])+" "+str(domainBox[1])+" xlo xhi\n")
-        myfile.write(" "+str(domainBox[2])+" "+str(domainBox[3])+" xlo xhi\n")
-        myfile.write(" "+str(domainBox[4])+" "+str(domainBox[5])+" xlo xhi\n")
-        myfile.write("\nAtoms\n\n")
+        writeHeader(myfile,temp_data,atoms,domainBox)
         writeAtoms(myfile,temp_data,atoms)
     print('Created',outfile)        
  
                              
 def sumField(inputFile,sumField):
+    newfile = 'newUb'
     read_data1 = loadFile(inputFile)
     read_data2 = loadFile(sumField)
     cellsFile = 'UbCells'
     read_data3 = loadFile(cellsFile)
     cells = int(read_data1[20])
     finalLine = len(read_data1)
-    outfile = open('newUb','w')
+    outfile = open(newfile,'w')
     count = 0
     pointsList = []
     temp = []
@@ -193,4 +175,5 @@ def sumField(inputFile,sumField):
         outfile.write(str(read_data1[i]))
 
     outfile.close()
-    print(count,"of",cells, "changed")	                             
+    print(count,"of",cells, "changed")
+    print('created',newfile)	                             
