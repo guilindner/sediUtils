@@ -167,6 +167,7 @@ def sumField(inputFile,sumField):
         
         if cellsField[0] == 999:
             result = arrayInitial + arrayVortex
+            print(result)
             outfile.write('('+str(result[0])+' '+str(result[1])+' '+str(result[2])+')\n')
             count += 1
         else:
