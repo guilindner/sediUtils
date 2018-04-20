@@ -102,7 +102,7 @@ def removeAtoms(inputFile, atoms, box):
             temp_data.append([temp[4], temp[5], temp[6], temp[1]])
 
     with open(outfile, 'w') as myfile:
-        for i in range(10):
+        for i in range(11):
             if i == 2:
                 myfile.write(str(len(temp_data))+" atoms\n")
             elif i == 3:
