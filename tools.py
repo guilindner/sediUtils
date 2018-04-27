@@ -32,12 +32,12 @@ def generateAtoms(atoms, domainBox, safeBox):
     outfile = 'In_initial.in'
     domainBox = np.asarray(domainBox)
     safeBox = np.asarray(safeBox)
-    bounds = (domainBox + safeBox)/2
+    #bounds = (domainBox + safeBox)/2
     distance = atoms['diameter'] #distance between particles
     atype = 1
-    nPartx = int(bounds[1]/distance-2)
-    nParty = int(bounds[3]/distance-2)
-    nPartz = int(bounds[5]/distance-2)
+    nPartx = int(domainBox[1]/distance-2)
+    nParty = int(domainBox[3]/distance-2)
+    nPartz = int((domainBox[5]/2)/distance-2)
     temp_data = []
     count = 0
     for k in range(nPartx):
