@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+swirl
+{
+    type vectorSwakSetValue;
+
+    active true;
+    selectionMode all;
+
+    vectorSwakSetValueCoeffs {
+        useMaskExpression true;
+        maskExpression "mag(pos()-center)<coreR";
+
+        variables (
+            //"speed=1000;"
+            "pi=3.1415926;"
+            "gamma=1000;"
+            "coreR=0.005;"
+            "center=vector(0.01,pos().y,0.015);"
+            "velx1 = (gamma/(2 * pi * pos().x));" 
+            "velz1 = (gamma/(2 * pi * pos().y));" 
+            "velx2 = (1 - exp(-((pos().x))/pow(coreR,2)));"
+            "velz2 = (1 - exp(-((pos().y))/pow(coreR,2)));"
+            //"velx = gamma/(2*pi*r);"
+            //"velz = gamma/(2*pi*r);"
+        );
+        expressions {
+            U "vector(0,gamma/(2*pi),0)^(pos()-center)" [0 1 -1 0 0 0 0];
+            //U "vector(-vel*(pos().z-z_real)/r,0,vel*(x-x_real)/r,)" [0 1 -1 0 0 0 0];
+            //U "vector(0,-gamma,0)^(pos()*2*pi)" [0 1 -1 0 0 0 0];
+        }
+    }
+}
+
+
+// ************************************************************************* //

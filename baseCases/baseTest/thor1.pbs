@@ -1,0 +1,101 @@
+###!/bin/bash
+### ssh -p 86 glindner@thor.univ-poitiers.fr
+
+#PBS -q default
+#PBS -N "GL_1_02"
+#PBS -j oe
+#PBS -m abe -M guilherme.lindner@etu.univ-poitiers.fr 
+#PBS -o 1_settle.out
+#PBS -e 1_settle.error
+#PBS -l select=1:ncpus=20:mpiprocs=20
+#PBS -l walltime=96:00:00
+
+cd ${PBS_O_WORKDIR}
+module purge
+module load codes/openfoam/2.3.1
+
+export FOAM_INST_DIR=/sw/codes
+source /sw/codes/OpenFOAM-2.3.1/etc/bashrc
+
+export PATH=/home/glindner/OpenFOAM/glindner-2.3.1/platforms/linux64IccDPOpt/bin:$PATH
+export LD_LIBRARY_PATH=/home/glindner/OpenFOAM/glindner-2.3.1/platforms/linux64IccDPOpt/lib:$LD_LIBRARY_PATH
+
+# Source tutorial run functions
+#. $WM_PROJECT_DIR/bin/tools/RunFunctions
+#----------------------------------------------------------
+# get MPI info
+#----------------------------------------------------------
+# nb of procs
+NCPU=`cat $PBS_NODEFILE | wc -l`
+# hosts list (see SGI manual for OpenFOAM)
+hosts_list=""
+mpirun_hosts_list=""
+host_token="0"
+host_np=0
+
+for i in $(cat $PBS_NODEFILE | sort )
+do
+    hosts_list="$hosts_list $i"
+done
+
+echo "$hosts_list"
+for i in $hosts_list
+do
+    if [ $host_token = "0" ]
+    then
+        # this is the first name in the list of hosts
+        host_token="$i"
+    fi
+    if [ $host_token = $i ]
+    then
+        # this is a repeated host list in the sequence
+        # thus increment the associated count host_np
+        host_np=$(($host_np + 1))
+    else
+        # a new hostname has now appeared in the list
+        # thus update the hosts_list with the host_token
+        # and its associated process count
+        # and set host_token to the new hostname
+        # and reset the new host_token associated process count
+        #to1
+        mpirun_hosts_list="$mpirun_hosts_list,$host_token $host_np"
+        host_token="$i"
+        host_np=1
+    fi
+done
+# update mpirun_hosts_list with the last entry
+mpirun_hosts_list="$mpirun_hosts_list,$host_token $host_np"
+# remove the leading coma in mpirun_hosts_list
+mpirun_hosts_list=$(echo $mpirun_hosts_list| sed -e "s/,//")
+#----------------------------------------------------------
+echo ------------------------------------------------------
+
+echo 'This job allows '${NCPU}' cpu(s)'
+echo 'This job is running over node(s): '
+cat $PBS_NODEFILE
+echo ------------------------------------------------------
+echo PBS: qsub running over $PBS_O_HOST
+echo PBS: origin queue: $PBS_O_QUEUE
+echo PBS: execution queue: $PBS_QUEUE
+echo PBS: working directory: $PBS_O_WORKDIR
+echo PBS: job identification: $PBS_JOBID
+echo PBS: job name: $PBS_JOBNAME
+echo PBS: nodes file: $PBS_NODEFILE
+echo PBS: home directory: $PBS_O_HOME
+echo PBS: PATH = $PBS_O_PATH
+echo MPIRUN HOSTS LISTS = $mpirun_hosts_list
+echo ------------------------------------------------------
+# run application
+#OF_APP=$(getApplication)
+OF_APP=lammpsFoam
+
+cd $PBS_O_HOME/scratch/1_02
+
+rm -rf 0.* processor* log*
+blockMesh > log.blockMesh
+decomposePar -force > log.decomposePar
+mpirun  $mpirun_hosts_list $OF_APP -parallel > log.$OF_APP 2>&1
+reconstructPar > log.reconstructPar
+# rm -rf processor*
+
+echo END OF SCRIPT

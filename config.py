@@ -10,4 +10,4 @@ domainBox = [0.0, 0.1, 0.0, 0.1, 0.0, 0.05]
 safeBox = [0.0, 0.1, 0.0, 0.1, 0.0, 0.01]
 
 #Active domain, particles out of this box will be frozen
-activeBox = [0.04, 0.09, 0.00, 0.1, 0.01, 0.05]
+activeBox = [0.04, 0.09, 0.00, 0.1, 0.005, 0.05]
