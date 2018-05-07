@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-mx=20
-my=20
-mz=10
+mx=50
+my=50
+mz=25
 
-flow=0.2
+flow=0.15
 vortexR=0.01
 vortexS=50
 settleTime=0.5
@@ -18,7 +18,7 @@ dir1=1_$baseDir
 dir2=2_$baseDir
 dir3=3_$baseDir
 dir4=4_$baseDir
-UTILS=~/OpenFOAM/sediUtils
+UTILS=~/sediUtils
 #################### 1 #################### 
 # 1 - create settling case dir 
 cp -r $baseDir $dir1
@@ -32,7 +32,7 @@ sed -i "s/^endTime.*/endTime         $settleTime;/" system/controlDict
 
 # generate particles
 echo "1 - generating particles"
-###python3 $UTILS/sediUtils.py -g
+python3 $UTILS/sediUtils.py -g
 
 # generate mesh and run simulation
 # TODO:change blockMesh coordinates and refinment
@@ -66,6 +66,7 @@ rm -rf 0.25 0.5
 # prepare thor file
 mv thor1.pbs thor2.pbs
 sed -i "s/GL_1_02/GL_2_$mx/" thor2.pbs
+sed -i "s/1_baseTest/2_baseTest" thor2.pbs
 
 # remove unnecessary particles
 python3 $UTILS/sediUtils.py -r -i In_OF.in
@@ -131,6 +132,7 @@ sed -i "s/^endTime.*/endTime         $convectTime;/" system/controlDict
 # prepare thor file
 mv thor2.pbs thor4.pbs
 sed -i "s/GL_2_$mx/GL_4_$mx/" thor4.pbs
+sed -i "s/2_baseTest/4_baseTest" thor2.pbs
 echo "foamToVTK -fields '(alpha p Q Ua Ub)'" >> thor4.pbs
 
 # generate combined velocity
