@@ -39,7 +39,7 @@ echo "1 - generating particles"
 python $UTILS/sediUtils.py -g
 
 # prepare thor file
-sed -i "s/GL_1_xx/GL_1_$mx/" thor2.pbs
+sed -i "s/GL_1_xx/GL_1_$mx/" thor1.pbs
 
 # TODO:change blockMesh coordinates and refinment
 #echo "1 - blockMesh"
