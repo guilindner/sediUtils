@@ -25,7 +25,7 @@ FoamFile
 simulationType  LES;
 LES
 {
-    LESModel    kEqn;
+    LESModel    Smagorinsky;
     turbulence  on;
     printCoeffs on;
     delta       cubeRootVol;
