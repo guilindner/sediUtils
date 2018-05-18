@@ -24,7 +24,7 @@ regions
 (
     boxToCell
     {
-        box (0.00 0.03 0.007) (0.04 0.07 1.0);
+        box (0.00 0.03 0.01) (0.04 0.07 1.0);
         fieldValues
         (
             volVectorFieldValue UbCells (999 999 999)
