@@ -8,9 +8,9 @@ mx=200
 my=200
 mz=100
 
-flow=0.15
+flow=0.26
 vortexR=0.005
-vortexS=50
+vortexS=20
 settleTime=0.25
 flowTime=0.25
 convectTime=0.5
@@ -24,7 +24,9 @@ dir3=3_$baseDir
 dir4=4_$baseDir
 UTILS=~/sediUtils
 
-
+echo "flow speed = $flow"
+echo "vortex radius = $vortexR"
+echo "vortex speed = $vortexS"
 run1 () {
     # 1 - create settling case dir 
     cp -r $baseDir $dir1
