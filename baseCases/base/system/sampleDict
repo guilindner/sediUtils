@@ -23,12 +23,12 @@ setFormat       raw;
 
 fields
 (
-    alpha Ub
+    Ub UbMean
 );
 
 surfaces
 (    
-    planeZ
+    planeZ_35mm
     {
         type    plane;
         basePoint    (0.05 0.05 0.035);

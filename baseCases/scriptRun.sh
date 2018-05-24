@@ -8,15 +8,15 @@ mx=200
 my=200
 mz=100
 
-flow=0.26
+flow=0.23
 vortexR=0.005
-vortexS=20
+vortexS=40
 settleTime=0.25
 flowTime=0.25
 convectTime=0.5
 
-baseDir=baseTest
-baseDirVortex=baseTestVortex
+baseDir=base
+baseDirVortex=baseVortex
 
 dir1=1_$baseDir
 dir2=2_$baseDir
