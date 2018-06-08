@@ -11,7 +11,11 @@ def writeAtoms(myfile,temp_data,atoms):
         x = temp_data[i][0]
         y = temp_data[i][1]
         z = temp_data[i][2]
-        myfile.write(str(i+1)+" "+str(atype)+" "+str(atoms['diameter'])+" "+str(atoms['density'])+
+        if atoms['std_diameter'] > 0.0:
+            diameter = round(np.random.normal(atoms['diameter'], atoms['std_diameter']),8)
+        else:
+            diameter = atoms['diameter']
+        myfile.write(str(i+1)+" "+str(atype)+" "+str(diameter)+" "+str(atoms['density'])+
                      " "+str(x) +" "+str(y)+" "+str(z)+" "+"\n")
 
 def writeHeader(myfile,temp_data,atoms,domainBox):

@@ -1,7 +1,7 @@
 #!/usr/bin/env/ python3
 
 #Atoms/particle definition
-atoms = {'nType' : 2, 'diameter' : 0.0005, 'density' : 2500}
+atoms = {'nType' : 2, 'diameter' : 0.0005, 'std_diameter' : 0.0000,'density' : 2500}
 
 # Domain definition, where the simulation happens
 domainBox = [0.0, 0.1, 0.0, 0.1, 0.0, 0.05]
