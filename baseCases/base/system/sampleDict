@@ -23,8 +23,20 @@ setFormat       raw;
 
 fields
 (
-    Ub UbMean
+    Ub alpha
 );
+
+sets
+(
+    lineZ
+    {
+        type uniform;
+        axis z;
+        start (0.05 0.05 0.0);
+        end (0.05 0.05 0.05);
+        nPoints 100;
+    }
+); 
 
 surfaces
 (    
@@ -33,6 +45,13 @@ surfaces
         type    plane;
         basePoint    (0.05 0.05 0.035);
         normalVector (0.00 0.00 1.00);
+        triangulate  false;
+    }
+    planeY_50mm
+    {
+        type    plane;
+        basePoint    (0.05 0.05 0.025);
+        normalVector (0.00 1.00 0.00);
         triangulate  false;
     }
 );
