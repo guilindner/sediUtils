@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 
 module load codes/openfoam/2.3.1
 source ~/swak4Foam/prefs.sh
@@ -9,9 +10,9 @@ my=200
 mz=100
 
 flow=0.23
-vortexR=0.005
-vortexS=40
-settleTime=0.25
+vortexR=0.006
+vortexS=80
+settleTime=0.5
 flowTime=0.25
 convectTime=0.5
 
@@ -70,17 +71,24 @@ run2 () {
     
     # define simulation time
     sed -i "s/^endTime.*/endTime         $flowTime;/" system/controlDict
+    sed -i "s/^writeInterval.*/writeInterval   $flowTime;/" system/controlDict
     
-    # convert settled particles into LAMMPS format 
+    # convert settled particles into LAMMPS format
+    echo "2 - converting particles" 
     python $UTILS/sediUtils.py -c -i $settleTime/lagrangian/defaultCloud/positions
     
-    rm -rf 0.25 0.5
+    rm -rf 0.* [1-9]*
     rm log*
+    
+    # perturb Ub velocity
+    setFields > log.setFields
+    python $UTILS/sediUtils.py -p -i 0/Ub
+    mv newUb 0/Ub    
     
     # prepare thor file
     mv thor1.pbs thor2.pbs
     sed -i "s/GL_1_$mx/GL_2_$mx/" thor2.pbs
-    sed -i "s/1_baseTest/2_baseTest/" thor2.pbs
+    sed -i "s/$dir1/$dir2/" thor2.pbs
     
     # remove unnecessary particles
     python $UTILS/sediUtils.py -r -i In_OF.in
@@ -141,17 +149,17 @@ run4 () {
     # 4 - create convective case dir
     cp -r $dir2 $dir4
     cd $dir4
-    rm -rf 0.25 0.5
+    rm -rf 0.* [1-9]*
     rm log*
     
     # define simulation time
     sed -i "s/^endTime.*/endTime         $convectTime;/" system/controlDict
-    sed -i "s/^writeInterval.*/writeInterval   0.01;/" system/controlDict
+    sed -i "s/^writeInterval.*/writeInterval   0.02;/" system/controlDict
     
     # prepare thor file
     mv thor2.pbs thor4.pbs
     sed -i "s/GL_2_$mx/GL_4_$mx/" thor4.pbs
-    sed -i "s/2_baseTest/4_baseTest/" thor4.pbs
+    sed -i "s/2_base/4_base/" thor4.pbs
     #echo "Q" >> thor4.pbs
     #echo "foamToVTK -fields '(alpha p Q Ua Ub)' -allPatches" >> thor4.pbs
     
