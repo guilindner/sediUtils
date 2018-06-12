@@ -19,6 +19,9 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--sumField', dest='sumField',
                         default='none',
                         help='input file to be added', metavar='FILE')
+    parser.add_argument('-p', action='store_true',
+                        default='none',
+                        help='perturb selected velocity field')
     parser.add_argument('-g', action='store_true',
                         help='generate atoms inside the domain')
     parser.add_argument('-c', action='store_true',
@@ -45,3 +48,5 @@ if __name__ == '__main__':
         tools.activateAtoms(args.inputFile, config.activeBox)
     if args.sumField != 'none':
        tools.sumField(args.inputFile, args.sumField)
+    if args.p == True:
+       tools.perturbField(args.inputFile)

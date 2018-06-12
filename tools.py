@@ -181,3 +181,39 @@ def sumField(inputFile,sumField):
     outfile.close()
     print(count,"of",cells, "changed")
     print('created',newfile)	                             
+
+def perturbField(inputFile):
+    k = 0.01
+    newfile = 'newUb'
+    read_data1 = loadFile(inputFile)
+ 
+    cells = int(read_data1[20])
+    finalLine = len(read_data1)
+    outfile = open(newfile,'w')
+    count = 0
+    pointsList = []
+    temp = []
+
+    for i in range(0,22):
+        outfile.write(str(read_data1[i])) 
+    for i in range(22,finalLine):
+        if read_data1[i] == ')\n':
+            line = i
+            outfile.write(')\n')
+            break
+        initialField = read_data1[i].replace('(','').replace(')','').split()
+        arrayInitial = np.asarray(initialField)
+        arrayInitial = arrayInitial.astype(np.float)
+        
+        if arrayInitial[0] == 999:
+            rand = np.random.uniform(-1,1,[3,1])*k
+            outfile.write('('+str(rand[0][0])+' '+str(rand[1][0])+' '+str(rand[2][0])+')\n')
+            count += 1
+        else:
+            outfile.write(str(read_data1[i]))
+    for i in range(line+1,finalLine):
+        outfile.write(str(read_data1[i]))
+
+    outfile.close()
+    print(count,"of",cells, "changed")
+    print('created',newfile)	 
