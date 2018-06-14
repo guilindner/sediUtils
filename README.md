@@ -3,9 +3,9 @@ utils to use with OpenFOAM and sediFoam (LAMMPS)
 
 the file **config.py** should be used to adjust the simulation parameter like:
 - quantity of particle types
-- particle diameter
+- particle diameter and optionally the gaussian distribution
 - particle density
-- domaiBox, where the simulation happens
+- domainBox, where the simulation happens
 - safeBox, where the particles will be kept after trimming
 - activeBox, where the active particles box is defined, freezing the rest
 
