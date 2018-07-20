@@ -5,16 +5,17 @@ set -x
 module load codes/openfoam/2.3.1
 source ~/swak4Foam/prefs.sh
 
-mx=200
-my=200
-mz=100
-
-flow=0.23
-vortexR=0.006
-vortexS=80
-settleTime=0.5
-flowTime=0.25
-convectTime=0.5
+UTILS=~/sediUtils
+configFile="$UTILS/config.py"
+mx=$(cat $configFile | grep "^mx" | cut -d "=" -f 2)
+my=$(cat $configFile | grep "^my" | cut -d "=" -f 2)
+mz=$(cat $configFile | grep "^mz" | cut -d "=" -f 2)
+flow=$(cat $configFile | grep "^flow" | cut -d "=" -f 2)
+vortexR=$(cat $configFile | grep "^vortexR" | cut -d "=" -f 2)
+vortexS=$(cat $configFile | grep "^vortexS" | cut -d "=" -f 2)
+settleTime=$(cat $configFile | grep "^settleTime" | cut -d "=" -f 2)
+flowTime=$(cat $configFile | grep "^flowTime" | cut -d "=" -f 2)
+convectTime=$(cat $configFile | grep "^convectTime" | cut -d "=" -f 2)
 
 baseDir=base
 baseDirVortex=baseVortex
@@ -23,11 +24,7 @@ dir1=1_$baseDir
 dir2=2_$baseDir
 dir3=3_$baseDir
 dir4=4_$baseDir
-UTILS=~/sediUtils
 
-echo "flow speed = $flow"
-echo "vortex radius = $vortexR"
-echo "vortex speed = $vortexS"
 run1 () {
     # 1 - create settling case dir 
     cp -r $baseDir $dir1

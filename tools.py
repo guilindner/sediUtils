@@ -182,8 +182,7 @@ def sumField(inputFile,sumField):
     print(count,"of",cells, "changed")
     print('created',newfile)	                             
 
-def perturbField(inputFile):
-    k = 0.01
+def perturbField(inputFile,flow,k):
     newfile = 'newUb'
     read_data1 = loadFile(inputFile)
  
@@ -206,7 +205,7 @@ def perturbField(inputFile):
         arrayInitial = arrayInitial.astype(np.float)
         
         if arrayInitial[0] == 999:
-            rand = np.random.uniform(-1,1,[3,1])*k
+            rand = np.random.uniform(-1,1,[3,1])*flow*k
             outfile.write('('+str(rand[0][0])+' '+str(rand[1][0])+' '+str(rand[2][0])+')\n')
             count += 1
         else:

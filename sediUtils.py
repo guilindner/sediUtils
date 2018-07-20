@@ -49,4 +49,4 @@ if __name__ == '__main__':
     if args.sumField != 'none':
        tools.sumField(args.inputFile, args.sumField)
     if args.p == True:
-       tools.perturbField(args.inputFile)
+       tools.perturbField(args.inputFile,config.flow,config.k)
