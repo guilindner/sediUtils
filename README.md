@@ -9,6 +9,16 @@ the file **config.py** should be used to adjust the simulation parameter like:
 - safeBox, where the particles will be kept after trimming
 - activeBox, where the active particles box is defined, freezing the rest
 
+## launching a simulation on Thor HPC
+1. copy the baseCases to your user folder;
+2. chance your simulation options in *config.py* 
+2. edit thor1.pbs and add your e-mail for notifications
+3. run scriptRun.sh:
+```
+nohup sh scriptRun.sh > log.scriptRun &
+```
+
+
 ## examples
 generate initial file with evenly spaced particles:
 
