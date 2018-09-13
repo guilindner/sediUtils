@@ -1,12 +1,12 @@
 ###!/bin/bash
-### ssh -p 86 glindner@thor.univ-poitiers.fr
+### ssh -p 86 YOUR_USER_NAME@thor.univ-poitiers.fr
 
 #PBS -q default
 #PBS -N "GL_1_xx"
 #PBS -j oe
-#PBS -m abe -M guilherme.lindner@etu.univ-poitiers.fr 
-#PBS -o GL_1_xx.out
-#PBS -e GL_1_xx.error
+#PBS -m abe -M YOUR_PERSONAL_EMAIL@SOMETHING.fr 
+#PBS -o sedi_1_xx.out
+#PBS -e sedi_1_xx.error
 #PBS -l select=4:ncpus=20:mpiprocs=20
 #PBS -l walltime=48:00:00
 
@@ -17,8 +17,8 @@ module load codes/openfoam/2.3.1
 export FOAM_INST_DIR=/sw/codes
 source /sw/codes/OpenFOAM-2.3.1/etc/bashrc
 
-export PATH=/home/glindner/OpenFOAM/glindner-2.3.1/platforms/linux64IccDPOpt/bin:$PATH
-export LD_LIBRARY_PATH=/home/glindner/OpenFOAM/glindner-2.3.1/platforms/linux64IccDPOpt/lib:$LD_LIBRARY_PATH
+export PATH=/home/$USER/OpenFOAM/$USER-2.3.1/platforms/linux64IccDPOpt/bin:$PATH
+export LD_LIBRARY_PATH=/home/$USER/OpenFOAM/$USER-2.3.1/platforms/linux64IccDPOpt/lib:$LD_LIBRARY_PATH
 
 # Source tutorial run functions
 #. $WM_PROJECT_DIR/bin/tools/RunFunctions
