@@ -41,7 +41,7 @@ run1 () {
     python $UTILS/sediUtils.py -g
     
     # prepare thor file
-    sed -i "s/GL_1_xx/GL_1_$mx/" thor1.pbs
+    sed -i "s/sedi_1_xx/sedi_1_$mx/" thor1.pbs
     
     # TODO:change blockMesh coordinates and refinment
     #echo "1 - blockMesh"
@@ -84,7 +84,7 @@ run2 () {
     
     # prepare thor file
     mv thor1.pbs thor2.pbs
-    sed -i "s/GL_1_$mx/GL_2_$mx/" thor2.pbs
+    sed -i "s/sedi_1_$mx/sedi_2_$mx/" thor2.pbs
     sed -i "s/$dir1/$dir2/" thor2.pbs
     
     # remove unnecessary particles
@@ -155,7 +155,7 @@ run4 () {
     
     # prepare thor file
     mv thor2.pbs thor4.pbs
-    sed -i "s/GL_2_$mx/GL_4_$mx/" thor4.pbs
+    sed -i "s/sedi_2_$mx/sedi_4_$mx/" thor4.pbs
     sed -i "s/2_base/4_base/" thor4.pbs
     #echo "Q" >> thor4.pbs
     #echo "foamToVTK -fields '(alpha p Q Ua Ub)' -allPatches" >> thor4.pbs
