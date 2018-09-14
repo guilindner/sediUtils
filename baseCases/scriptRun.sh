@@ -10,7 +10,7 @@ configFile="$UTILS/config.py"
 mx=$(cat $configFile | grep "^mx" | cut -d "=" -f 2)
 my=$(cat $configFile | grep "^my" | cut -d "=" -f 2)
 mz=$(cat $configFile | grep "^mz" | cut -d "=" -f 2)
-flow=$(cat $configFile | grep "^flow" | cut -d "=" -f 2)
+flow=$(cat $configFile | grep "^flow=" | cut -d "=" -f 2)
 vortexR=$(cat $configFile | grep "^vortexR" | cut -d "=" -f 2)
 vortexS=$(cat $configFile | grep "^vortexS" | cut -d "=" -f 2)
 settleTime=$(cat $configFile | grep "^settleTime" | cut -d "=" -f 2)
